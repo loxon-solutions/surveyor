@@ -1,5 +1,9 @@
 ![Surveyor](documentation/surveyor.png)
 
+![npm-publish](https://github.com/loxon-solutions/surveyor/workflows/npm-publish/badge.svg) 
+[![npm version](https://badge.fury.io/js/%40loxon-solutions%2Fsurveyor.svg)](https://badge.fury.io/js/%40loxon-solutions%2Fsurveyor)
+[!project status](https://img.shields.io/badge/project%20status-beta-red)
+
 Surveyor is a tool to parse a project and create documentation diagrams (like maps for the software) automatically. Diagrams are represented internally as a graph, and this graph can be exported in various formats.
 
 ## Features
@@ -14,7 +18,7 @@ Surveyor is a tool to parse a project and create documentation diagrams (like ma
 
 1. Install this library
     ```shell script
-    npm install --save {TODO}
+    npm install --save @loxon-solutions/surveyor
     ```
 2. Create index.ts file in your project
     ```typescript
@@ -36,4 +40,3 @@ Surveyor is a tool to parse a project and create documentation diagrams (like ma
 Contributions are welcome, just create a pull request.
 
 - [Architecture](documentation/architecture.md)
-- [TODO](documentation/todo.md)

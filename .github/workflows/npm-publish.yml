@@ -15,5 +15,7 @@ jobs:
       uses: actions/setup-node@master
       with:
         node-version: 10.0.0
-    - name: Publish if version has been updated
-      run: export NPM_TOKEN=${{ secrets.NPM_PUBLISH }} && npm publish 
+    - name: Publish to NPM
+      uses: JS-DevTools/npm-publish@v1
+      with:
+        token: ${{ secrets.NPM_PUBLISH }}

@@ -3,7 +3,7 @@
   "version": "1.0.3",
   "description": "",
   "scripts": {
-    "prepublish": "npm install && tsc"
+    "prepublish": "tsc"
   },
   "keywords": [],
   "author": "loxon-solutions",

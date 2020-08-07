@@ -1,11 +1,13 @@
-import {Surveyor} from './surveyor/surveyor';
-import {ProjectDependencyParser} from './parsers/project-dependency.parser';
-import {PumlWriter} from './surveyor/writers/puml-writer';
-import {TepeeMessageParser} from './parsers/tepee-message.parser';
-import {TepeeMessageAgentParser} from './parsers/tepee-message-agent.parser';
-
-new Surveyor()
-    .addParser(ProjectDependencyParser)
-    .addParser(TepeeMessageParser)
-    .addParser(TepeeMessageAgentParser)
-    .run();
+export * from './parsers/abstract.parser';
+export * from './parsers/maven-dependency-tree.parser';
+export * from './persistence/graph-database';
+export * from './types/puml-notation'
+export * from './writers/abstract-writer'
+export * from './writers/neo4j-writer'
+export * from './writers/puml-writer'
+export * from './environment-params'
+export * from './environment'
+export * from './job'
+export * from './job-context'
+export * from './param-option'
+export * from './surveyor'

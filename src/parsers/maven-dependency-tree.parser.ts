@@ -13,10 +13,10 @@ export class MavenDependencyTreeService extends AbstractParser{
     private MVN_COMMAND = 'mvn -f server/pom.xml dependency:tree -DoutputType=dot -DoutputFile=';
     private MVN_DOT_OUTPUT_REGEX = /".*?:(.*?):.*?:(.*?)" -> ".*?:(.*?):.*?:(.*?)"/gm;
 
-    private path: string;
-    private db: GraphDatabase;
+    private path?: string;
+    private db?: GraphDatabase;
 
-    constructor(env: Environment, context: JobContext) {
+    constructor(env?: Environment, context?: JobContext) {
         super(env, context);
         if (env && context) {
             this.path = context.params.get('path');
@@ -25,7 +25,10 @@ export class MavenDependencyTreeService extends AbstractParser{
     }
 
     public parse(): void {
-        this.getDependencyTree(this.path);
+        if (this.path && this.db) {
+            this.getDependencyTree(this.path);
+        }
+
     }
 
     private getDependencyTree(path: string): void {
@@ -68,7 +71,9 @@ export class MavenDependencyTreeService extends AbstractParser{
                     type: NodeType.SERVER_LIB
                 }
             };
-            this.db.addLink(link);
+            if (this.db) {
+                this.db.addLink(link);
+            }
         }
     }
 

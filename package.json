@@ -1,16 +1,20 @@
 {
   "name": "@loxon-solutions/surveyor",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "",
-  "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "prepublish": "tsc"
+  },
   "keywords": [],
   "author": "loxon-solutions",
   "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "devDependencies": {
+    "@types/glob": "^7.1.1",
     "@types/node": "^12.7.11",
     "@types/shelljs": "^0.8.5",
-    "@types/glob": "^7.1.1",
+    "husky": "^4.2.5",
     "ts-node": "^8.10.1",
     "typescript": "^3.6.3"
   },
@@ -19,5 +23,10 @@
     "maven": "^4.7.0",
     "neo4j-driver": "^4.0.2",
     "shelljs": "^0.8.3"
+  },
+  "husky": {
+    "hooks": {
+      "pre-push": "tsc"
+    }
   }
 }

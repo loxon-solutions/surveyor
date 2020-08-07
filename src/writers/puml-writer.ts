@@ -6,9 +6,9 @@ import {ParamOption} from '../param-option';
 
 export class PumlWriter extends AbstractWriter {
 
-    private buffer: PumlNotation;
+    private buffer?: PumlNotation;
 
-    private nodeToPumlNotation(node: GraphNode): PumlNotation {
+    private nodeToPumlNotation(node: GraphNode): PumlNotation | undefined {
         switch(node.type) {
             case NodeType.SERVER_LIB:
                 return 'LoxonServerLib(' + this.toPumlAliasCompatible(node.name)  +', "' + node.name +'", "")';
@@ -55,12 +55,18 @@ export class PumlWriter extends AbstractWriter {
     }
 
     protected async afterWrite(): Promise<void> {
+        if (!this.context) {
+            return;
+        }
         this.buffer += this.getFooterMessage();
         writeFileSync(this.context.params.get('outputPath'), this.buffer, { encoding: 'utf8', flag: 'a' });
         console.log('PumlWriter - Output file successfully written. :)');
     }
 
     protected beforeWrite(): void {
+        if (!this.context) {
+            return;
+        }
         if (!this.context.params.get('outputPath')) {
             throw new Error("outputPath parameter is needed for PUMLWriter!");
         }

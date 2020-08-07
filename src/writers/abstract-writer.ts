@@ -8,14 +8,14 @@ import {ParamOption} from '../param-option';
  */
 export abstract class AbstractWriter {
 
-    protected constructor(protected env: Environment, protected context: JobContext) {
+    public constructor(protected env?: Environment, protected context?: JobContext) {
         this.postConstruct();
     }
 
     public writeGraphDbContents(): void {
         this.requireParams();
-        const nodes = this.env.getDb().getNodes();
-        const links = this.env.getDb().getLinks();
+        const nodes = !this.env ? [] : this.env.getDb().getNodes();
+        const links = !this.env ? [] : this.env.getDb().getLinks();
         console.log(`Writer - Writing ${nodes.length} nodes and ${links.length} links...`);
         this.beforeWrite();
         nodes.forEach(n => this.writeNode(n));
@@ -28,7 +28,7 @@ export abstract class AbstractWriter {
             .getParamOptions()
             .filter(o => o.required)
             .forEach(o => {
-                if (!this.context.params.get(o.key)) {
+                if (this.context && this.env && !this.context.params.get(o.key)) {
                     this.env.fail(`Parameter ${o.key} is required but not given.`);
                 }
             })

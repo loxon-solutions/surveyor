@@ -5,10 +5,11 @@ import {Job} from './job';
 import {PumlWriter} from './writers/puml-writer';
 import {Neo4jWriter} from './writers/neo4j-writer';
 import {MavenDependencyTreeService} from './parsers/maven-dependency-tree.parser';
+import {JobContext} from './job-context';
 
 export class Surveyor {
-    private parsers: AbstractParser[];
-    private writers: AbstractWriter[];
+    private parsers?: AbstractParser[];
+    private writers?: AbstractWriter[];
 
     constructor() {
         this.addWriter(PumlWriter);
@@ -16,21 +17,19 @@ export class Surveyor {
         this.addParser(MavenDependencyTreeService);
     }
 
-    // @ts-ignore
-    public addParser<T extends AbstractParser>(parser: typeof T): Surveyor {
+    public addParser<T extends AbstractParser>(parser: new (env?: Environment, context?: JobContext) => T ): Surveyor {
         if (!this.parsers) {
             this.parsers = [];
         }
-        this.parsers.push(new parser(null, null));
+        this.parsers.push(new parser(undefined, undefined));
         return this;
     }
 
-    // @ts-ignore
-    public addWriter<T extends AbstractWriter>(writer: typeof T): Surveyor {
+    public addWriter<T extends AbstractWriter>(writer: new (env?: Environment, context?: JobContext) => T ): Surveyor {
         if (!this.writers) {
             this.writers = [];
         }
-        this.writers.push(new writer(null, null));
+        this.writers.push(new writer(undefined, undefined));
         return this;
     }
 
@@ -40,7 +39,7 @@ export class Surveyor {
 
         console.time('Execution');
 
-        let nextJob: Job;
+        let nextJob: Job | undefined;
         let jobIndex = 0;
         while((nextJob = env.popJob()) !== undefined) {
             nextJob.execute();

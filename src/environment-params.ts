@@ -43,6 +43,10 @@ export class EnvironmentParamsUtil {
     }
 
     private setDefaultValues(params: Map<any, any>) {
+        if (!this.env.paramOptions) {
+            return;
+        }
+
         this
             .env
             .paramOptions
@@ -57,14 +61,14 @@ export class EnvironmentParamsUtil {
             key = key.trim();
             value = value.trim();
         }
-        if (this.env.paramOptions.map(p => p.key).includes(key)) {
+        if (this.env.paramOptions && this.env.paramOptions.map(p => p.key).includes(key)) {
             try {
                 params.set(key, JSON.parse(value));
             } catch(e) {
                 params.set(key, value);
             }
             fingerprint.set(key, 1);
-        } else if (this.env.paramOptions.map(p => p.key).includes(key+'s') && Array.isArray(this.env.paramOptions.filter(p => p.key === key+'s'))) {
+        } else if (this.env.paramOptions && this.env.paramOptions.map(p => p.key).includes(key+'s') && Array.isArray(this.env.paramOptions.filter(p => p.key === key+'s'))) {
             if (!params.get(key+'s') || fingerprint.get(key+'s') === 0) {
                 // fingerprint 0 means that this is untouched, default values must be cleared.
                 params.set(key+'s', []);

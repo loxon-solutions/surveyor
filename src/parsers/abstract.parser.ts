@@ -7,7 +7,7 @@ import {ParamOption} from '../param-option';
  * Mostly they extract these informations from some kind of source code.
  */
 export abstract class AbstractParser {
-    protected constructor(protected env: Environment, protected context: JobContext){}
+    public constructor(protected env?: Environment, protected context?: JobContext){}
 
     public executeParse(): void {
         this.requireParams();
@@ -15,10 +15,14 @@ export abstract class AbstractParser {
     }
 
     private requireParams(): void {
-        this
+       this
             .getParamOptions()
             .filter(o => o.required)
             .forEach(o => {
+                if (!this.env || !this.context) {
+                    return;
+                }
+
                 if (!this.context.params.get(o.key)) {
                     this.env.fail(`Parameter ${o.key} is required but not given.`);
                 }

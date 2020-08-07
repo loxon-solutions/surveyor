@@ -5,7 +5,7 @@ import {ParamOption} from '../param-option';
 
 export class Neo4jWriter extends AbstractWriter {
 
-    private driver: Driver;
+    private driver?: Driver;
 
     private readonly PARAM_NAME_URL = 'neo4jUrl';
     private readonly PARAM_NAME_USER = 'neo4jUser';
@@ -13,9 +13,11 @@ export class Neo4jWriter extends AbstractWriter {
 
     protected postConstruct(): void {
         super.postConstruct();
-        this.driver = neo4j.driver(this.context.params.get(this.PARAM_NAME_URL),
-            neo4j.auth.basic(this.context.params.get(this.PARAM_NAME_USER), this.context.params.get(this.PARAM_NAME_PWD)));
-        console.log('Neo4jWriter constructed.');
+        if (this.context) {
+            this.driver = neo4j.driver(this.context.params.get(this.PARAM_NAME_URL),
+                neo4j.auth.basic(this.context.params.get(this.PARAM_NAME_USER), this.context.params.get(this.PARAM_NAME_PWD)));
+            console.log('Neo4jWriter constructed.');
+        }
     }
 
     protected async writeLink(link: GraphLink): Promise<void> {
@@ -31,6 +33,10 @@ export class Neo4jWriter extends AbstractWriter {
     }
 
     private async executeCommand(command: string): Promise<void> {
+        if (!this.context) {
+            return;
+        }
+
         const driver = neo4j.driver(this.context.params.get(''), neo4j.auth.basic("neo4j", "test"));
         const session = driver.session();
         try {
@@ -45,7 +51,9 @@ export class Neo4jWriter extends AbstractWriter {
     }
 
     protected async afterWrite(): Promise<void> {
-        await this.driver.close();
+        if (this.driver) {
+            await this.driver.close();
+        }
         await super.afterWrite();
     }
 

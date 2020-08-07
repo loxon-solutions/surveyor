@@ -11,21 +11,15 @@ export class GraphDatabase {
         this.links.add(link);
     }
 
-    public getNodes(q: GraphDatabaseQuery = null): GraphNode[] {
+    public getNodes(q: GraphDatabaseQuery | null = null): GraphNode[] {
         let res = Object.values(this.nodes);
-
-        if (q && q.nodeNameRegex) {
-            res = res.filter(n => n.name.match(q.nodeNameRegex));
-        }
+        res = res.filter(n => { if (q && q.nodeNameRegex) { n.name.match(q.nodeNameRegex)}});
         return res;
     }
 
-    public getLinks(q: GraphDatabaseQuery = null): GraphLink[] {
+    public getLinks(q: GraphDatabaseQuery | null = null): GraphLink[] {
         let res = [...this.links];
-
-        if (q && q.nodeNameRegex) {
-            res = res.filter(l => l.source.name.match(q.nodeNameRegex) && l.target.name.match(q.nodeNameRegex));
-        }
+        res = res.filter(l => { if (q && q.nodeNameRegex) { l.source.name.match(q.nodeNameRegex) && l.target.name.match(q.nodeNameRegex)}});
         return res;
     }
 

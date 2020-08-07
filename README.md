@@ -22,6 +22,8 @@ Surveyor is a tool to parse a project and create documentation diagrams (like ma
     ```
 2. Create index.ts file in your project
     ```typescript
+    import {Surveyor} from '@loxon-solutions/surveyor';
+   
     new Surveyor()
         .addParser(ProjectDependencyParser)
         .addParser(TepeeMessageParser)
